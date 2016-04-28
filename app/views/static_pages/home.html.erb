@@ -1,0 +1,28 @@
+<% if logged_in? %>
+  <div class="row">
+    <aside class="col-md-4">
+      <section class="user_info">
+        <%= render 'shared/user_info' %>
+      </section>
+      <section class="stats">
+        <%= render 'shared/stats' %>
+      </section>
+      <section class="question_form">
+        <%= render 'shared/question_form' %>
+      </section>
+    </aside>
+    <div class="col-md-8">
+      <h3>Questions</h3>
+      <%= render 'shared/feed' %>
+    </div>
+  </div>
+<% else %>
+  <div class="center jumbotron">
+    <% provide(:title, "Home") %>
+    <h1><%= image_tag("logocrop.png", alt: "Stack Overflow logo", height: 60, width: 60) %> Stack Overflow</h1>
+    <p>
+      Stack Overflow is a community of 4.7 million programmers, just like you, helping each other. Join them; it only takes a minute:
+    </p>
+    <%= link_to "Sign up now!", signup_path, class: "btn btn-lg btn-primary" %>
+  </div>
+<% end %>

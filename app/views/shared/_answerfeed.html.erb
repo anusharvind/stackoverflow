@@ -1,0 +1,6 @@
+<% if @answerfeed_items.any? %>
+  <ol class="answers">
+    <%= render @answerfeed_items %>
+  </ol>
+  <%= will_paginate @answerfeed_items %>
+<% end %>

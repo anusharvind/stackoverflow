@@ -1,0 +1,24 @@
+<% provide(:title, @title) %>
+<div class="row">
+  <aside class="col-md-4">
+    <section class="user_info">
+      <h1>
+        <%= @user.name %>
+      </h1>
+    </section>
+    <section class="stats">
+        <%= render 'shared/stats' %>
+      </section>
+  </aside>
+  <div class="col-md-8">
+    <% if @questions.any? %>
+      <h3><%= @title %> by <%= @user.name %></h3>
+      <ul class=" questions">
+        <%= render @questions %>
+      </ul>
+      <%= will_paginate @questions %>
+    <% else %>
+      <h3>No questions yet</h3>
+    <% end %>
+  </div>
+</div>

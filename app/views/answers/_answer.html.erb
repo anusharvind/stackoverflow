@@ -1,0 +1,61 @@
+<% if controller.class.to_s == "QuestionsController" %>
+  <li id="answer-<%= answer.id %>">
+    <table>
+      <tr>
+        <td align="center"><h3><%= answer.votes %></h3></td>
+        <td><%= link_to answer.user.name, answer.user %></td>
+      </tr>
+      <tr>
+        <td><%= link_to image_tag("up.png", title: "Upvote this answer"), upvote_answer_path(answerid: answer.id), method: :patch %> | <%= link_to image_tag("down.png", title: "Downvote this answer"), downvote_answer_path(answerid: answer.id), method: :patch %></td>
+        <td><%= answer.content %></td>
+      </tr>
+      <tr>
+        <td align="center" style="padding-top: 10px">
+        <% if(answer.is_answer) %>
+          <%= image_tag("yes.png", title: "This is the accepted answer") %>
+        <% elsif(current_user?(answer.question.user)) %>
+          <%= link_to  image_tag("no.png", title: "Accept this as answer"), answer, action: :update, method: :patch %>
+        <% end %>
+        </td>
+        <td style="padding-top: 10px">Posted <%= time_ago_in_words(answer.created_at) %> ago.
+            <% if current_user?(answer.user) %>
+              | <%= link_to "delete", answer, method: :delete, data: { confirm: "You sure?" } %>
+            <% end %></td>
+      </tr>
+    </table>
+    <br>
+    <div class="row comment">
+      <% if answer.comments.any? %>
+        <h4>Comments (<%= answer.comments.count %>)</h4>
+        <ol class="comments">
+          <%= render answer.comments %>
+        </ol>
+        <%= will_paginate @comments %>
+      <% end %>
+      <section class="comment_form">
+        <%= form_for(@comment) do |f| %>
+          <%= render 'shared/error_messages', object: f.object %>
+          <div class="field">
+            <%= f.text_area :content, placeholder: "Write a comment...", :required => true %>
+            <%= hidden_field_tag :qa, 2 %>
+            <%= hidden_field_tag :answer_id, answer.id %>
+          </div>
+          <%= f.submit "Post", class: "btn btn-primary" %>
+        <% end %>
+      </section>
+    </div>
+  </li>
+<% else %>
+  <li id="answer-<%= answer.id %>">
+    <h4>Question asked by <%= link_to answer.question.user.name, answer.question.user %> <%= time_ago_in_words(answer.question.created_at) %> ago</h4>
+    <span class="content"><%= link_to answer.question.title, answer.question %></span>
+    <span class="content"><%= answer.question.content %></span>
+    <h4>Answer</h4>
+    <span class="content"><%= answer.content %></span>
+     &nbsp;- <%= link_to answer.user.name, answer.user %></span> | 
+    Answered <%= time_ago_in_words(answer.created_at) %> ago
+    <% if current_user?(answer.user) %>
+        | <%= link_to "delete", answer, method: :delete, data: { confirm: "You sure?" } %>
+    <% end %>
+  </li>
+<% end %>

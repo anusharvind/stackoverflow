@@ -1,0 +1,10 @@
+<h3>Write an answer</h3>
+<%= form_for(@answer) do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
+  <div class="field">
+    <%= f.text_area :content, placeholder: "Write an answer...", :required => true %>
+    <%= hidden_field_tag :current_user, current_user.id %>
+    <%= hidden_field_tag :current_question, @question.id %>
+  </div>
+  <%= f.submit "Submit answer", class: "btn btn-primary" %>
+<% end %>
